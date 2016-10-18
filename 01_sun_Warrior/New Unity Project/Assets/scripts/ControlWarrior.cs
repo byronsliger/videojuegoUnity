@@ -2,11 +2,16 @@
 using System.Collections;
 
 public class ControlWarrior : MonoBehaviour {
+	static float walkVel = 3f;
+	static float runVel = 4f;
+	static string WALKING = "walking";
+	static string RUNNING = "running";
+
 	Rigidbody2D rbd;
 	Animator animator;
-	float malVel = 5f;
+	float currentVel = 3f;
 	bool haciaDerecha = true;
-	public float velocity;
+
 
 	// Use this for initialization
 	void Start () {
@@ -16,13 +21,21 @@ public class ControlWarrior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		float v = Input.GetAxis ("Horizontal") * malVel;
-		Vector2 vel = new Vector2 (0, rbd.velocity.y);
-		vel.x = v;
-		rbd.velocity = vel;
-		velocity = vel.x;
+		float v = Input.GetAxis ("Horizontal") * currentVel;
 
-		animator.SetFloat ("speed", v);
+		float speed = v < 0 ? v * -1 : v;
+
+		animator.SetFloat ("speed", speed);
+		Vector2 vel = new Vector2 (0, rbd.velocity.y);
+		if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING)) {
+			vel.x = v * walkVel;
+			currentVel = walkVel;
+		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName (RUNNING)) { 
+			vel.x = v * runVel;
+			currentVel = runVel;
+		}
+		rbd.velocity = vel;
+
 
 		if (haciaDerecha && v < 0) {
 			haciaDerecha = false;
