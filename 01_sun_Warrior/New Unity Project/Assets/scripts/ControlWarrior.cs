@@ -6,6 +6,8 @@ public class ControlWarrior : MonoBehaviour {
 	static float runVel = 4f;
 	static string WALKING = "walking";
 	static string RUNNING = "running";
+	static string JUMPING = "jumping";
+	static string IDLING = "idling";
 
 	Rigidbody2D rbd;
 	Animator animator;
@@ -18,6 +20,15 @@ public class ControlWarrior : MonoBehaviour {
 		rbd = GetComponent<Rigidbody2D> ();
 		animator = GetComponent<Animator> ();
 	}
+
+	// Update is called once per frame
+	void Update () {
+
+		if(Input.GetKey (KeyCode.UpArrow)) {
+			jump ();
+		}
+
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -26,6 +37,9 @@ public class ControlWarrior : MonoBehaviour {
 		float speed = v < 0 ? v * -1 : v;
 
 		animator.SetFloat ("speed", speed);
+		if (!animator.GetCurrentAnimatorStateInfo (0).IsName (JUMPING) && Input.GetKey (KeyCode.UpArrow)) {
+			
+		}
 		Vector2 vel = new Vector2 (0, rbd.velocity.y);
 		if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING)) {
 			vel.x = v * walkVel;
@@ -34,8 +48,7 @@ public class ControlWarrior : MonoBehaviour {
 			vel.x = v * runVel;
 			currentVel = runVel;
 		}
-		rbd.velocity = vel;
-
+		rbd.velocity = vel;	
 
 		if (haciaDerecha && v < 0) {
 			haciaDerecha = false;
@@ -44,6 +57,11 @@ public class ControlWarrior : MonoBehaviour {
 			haciaDerecha = true;
 			flip ();
 		}
+	}
+
+	void jump () {
+		//animator.SetTrigger ("jump");
+		rbd.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
 	}
 
 	void flip(){
