@@ -48,6 +48,7 @@
      <Compile Include="Assets\Orc Warrior\Scripts\MouseController.cs" />
      <Compile Include="Assets\scripts\ControlWarrior.cs" />
      <Compile Include="Assets\scripts\ControlZombie.cs" />
+     <Compile Include="Assets\scripts\disapperObject.cs" />
      <None Include="Assets\freeknight\README.txt" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
