@@ -2,8 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/ControlWarrior.cs">
     <Files>
-      <File FileName="Assets/scripts/ControlWarrior.cs" Line="28" Column="12" />
-      <File FileName="Assets/scripts/ControlZombie.cs" Line="42" Column="3" />
+      <File FileName="Assets/scripts/disapperObject.cs" Line="18" Column="33" />
+      <File FileName="Assets/scripts/ControlWarrior.cs" Line="122" Column="21" />
+      <File FileName="Assets/scripts/ControlZombie.cs" Line="25" Column="4" />
+      <File FileName="Assets/scripts/ControlParchment.cs" Line="22" Column="22" />
+      <File FileName="Assets/scripts/ControlRuby.cs" Line="9" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
