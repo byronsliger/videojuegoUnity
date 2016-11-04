@@ -5,8 +5,8 @@ using UnityEditor;
 
 public class ControlWarrior : MonoBehaviour
 {
-	static float walkVel = 3f;
-	static float runVel = 4f;
+	static float walkVel = 2f;
+	static float runVel = 3f;
 	static string WALKING = "walking";
 	static string RUNNING = "running";
 	static string JUMPING = "jumping";
@@ -18,9 +18,8 @@ public class ControlWarrior : MonoBehaviour
 
 	Rigidbody2D rbd;
 	Animator animator;
-	float currentVel = 3f;
+	float currentVel = 2f;
 	bool haciaDerecha = true;
-	bool jumping = false;
 	bool attacking = false;
 
 	ControlParchment ctrlParchment;
@@ -31,6 +30,13 @@ public class ControlWarrior : MonoBehaviour
 	public int numOfRubies = 0;
 	public Text txtNumOfRubies;
 
+	public bool jumping = false;
+	public float yJumpForce = 300;
+	Vector2 jumpForce;
+
+	public bool onGround = true;
+	public bool allowJump;
+	public string numCollition;
 	//public Canvas canvas;
 
 
@@ -58,30 +64,18 @@ public class ControlWarrior : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-
-		if (Input.GetKey (KeyCode.UpArrow)) {
-			jump ();
-		}
-
 		txtNumOfRubies.text = "x " + numOfRubies;
 	}
 		
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		
-		if (Mathf.Abs (Input.GetAxis ("Jump")) > 0.01f) {
-			if (!jumping) {
-				jumping = true;
-				animator.SetTrigger ("jump");
-			}
-		} else { 
-			jumping = false;
-		}
-
-		attack ();
 
 		move ();
+
+		jump ();
+
+		attack ();
 
 	}
 
@@ -112,8 +106,19 @@ public class ControlWarrior : MonoBehaviour
 
 	void jump ()
 	{
-		//animator.SetTrigger ("jump");
-		rbd.AddForce (new Vector2 (0, 10), ForceMode2D.Impulse);
+		if (Input.GetAxis ("Jump") > 0.01f) {
+			if (!jumping && onGround ) {
+				
+				jumpForce.x = 0f;
+				jumpForce.y = yJumpForce;
+				animator.SetTrigger ("jump");
+				rbd.AddForce (jumpForce);
+				jumping = true;
+				onGround = false;
+			}
+		} else { 
+			jumping = false;
+		}
 	}
 
 	void attack ()
@@ -123,8 +128,7 @@ public class ControlWarrior : MonoBehaviour
 				attacking = true;
 				animator.SetTrigger ("attack");
 			}
-		}
-		else {
+		} else {
 			attacking = false;
 		}
 	}
@@ -136,24 +140,19 @@ public class ControlWarrior : MonoBehaviour
 		animator.SetFloat ("speed", speed);
 		Vector2 vel = new Vector2 (0, rbd.velocity.y);
 		if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING)) {
-			vel.x = v * walkVel;
 			currentVel = walkVel;
+		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName (RUNNING)) {
+			currentVel = runVel;
 		}
-		else
-			if (animator.GetCurrentAnimatorStateInfo (0).IsName (RUNNING)) {
-				vel.x = v * runVel;
-				currentVel = runVel;
-			}
+		vel.x = v * currentVel;
 		rbd.velocity = vel;
 		if (haciaDerecha && v < 0) {
 			haciaDerecha = false;
 			flip ();
+		} else if (!haciaDerecha && v > 0) {
+			haciaDerecha = true;
+			flip ();
 		}
-		else
-			if (!haciaDerecha && v > 0) {
-				haciaDerecha = true;
-				flip ();
-			}
 	}
 
 	void flip ()
@@ -165,12 +164,17 @@ public class ControlWarrior : MonoBehaviour
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
-		if (other.gameObject.name.Equals ("parchment")) {
+		string tag = other.gameObject.tag;
+		if (tag == "ground") {
+			onGround = true;
+		}
+
+		if (tag == "parchment") {
 			ctrlParchment = other.gameObject.gameObject.GetComponent<ControlParchment> ();
 			ctrlParchment.disappearParchment ();
 			parchmentObtained++;
 		}
-		if (other.gameObject.name.Equals ("gem_ruby")) {
+		if (tag == "gem_ruby") {
 			ctrlRuby = other.gameObject.gameObject.GetComponent<ControlRuby> ();
 			ctrlRuby.disappearRuby ();
 			numOfRubies++;
