@@ -107,7 +107,7 @@ public class ControlWarrior : MonoBehaviour
 	void jump ()
 	{
 		if (Input.GetAxis ("Jump") > 0.01f) {
-			if (!jumping && onGround ) {
+			if (!jumping /*&& onGround */) {
 				
 				jumpForce.x = 0f;
 				jumpForce.y = yJumpForce;
