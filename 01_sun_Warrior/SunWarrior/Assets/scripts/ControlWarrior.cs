@@ -5,12 +5,11 @@ using UnityEditor;
 
 public class ControlWarrior : MonoBehaviour
 {
-	static float walkVel = 2f;
-	static float runVel = 3f;
+	static float walkVel = 3f;
+	static float runVel = 3.5f;
 	static string WALKING = "walking";
 	static string RUNNING = "running";
-	static string JUMPING = "jumping";
-	//static string IDLING = "idling";
+	static string DYING = "Dying";
 
 	const string pathTexturePotionOnTop = "Assets/Premios/PNG/64px/potion_6.png";
 	const string pathTextureParchmentOnTop = "Assets/Premios/PNG/64px/scroll_5.png";
@@ -24,6 +23,7 @@ public class ControlWarrior : MonoBehaviour
 
 	ControlParchment ctrlParchment;
 	ControlRuby ctrlRuby;
+	ControlZombie ctrlZombie;
 
 	public int energy = 3;
 	public int parchmentObtained = 0;
@@ -70,6 +70,9 @@ public class ControlWarrior : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
+		if (animator.GetCurrentAnimatorStateInfo (0).IsName (DYING)) {
+			return;
+		}
 
 		move ();
 
@@ -179,5 +182,14 @@ public class ControlWarrior : MonoBehaviour
 			ctrlRuby.disappearRuby ();
 			numOfRubies++;
 		}	
+
+
+	}
+
+	public void sustractEnergy(){
+		energy--;
+		if(energy <= 0){
+			animator.SetTrigger ("dead");
+		}
 	}
 }

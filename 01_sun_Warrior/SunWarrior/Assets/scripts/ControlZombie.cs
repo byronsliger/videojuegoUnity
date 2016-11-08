@@ -1,43 +1,112 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
-public class ControlZombie : MonoBehaviour {
+public class ControlZombie : MonoBehaviour
+{
 	public float vel = -1;
 	Rigidbody2D rbd;
 	Animator animator;
 	static string WALKING = "walking";
 	static string IDLING = "idling";
+	static string ATTACKING = "attacking";
+	static string DYING = "dying";
+
+	public Transform hero;
+	bool isNegative = true;
+	bool needFlip = true;
+
+	public ControlWarrior ctrlWarrior;
+	public int currentEnergy = 10;
+	int startEnergy = 10;
+	bool isDead = false;
+
+	public Slider healthEnemy;
+	public Image fillImage;
+	Color zeroHealthColor = Color.red;
+	Color fullHealthColor = Color.green;
+
+	void OnGUI ()
+	{
+		SetHealthUI ();
+	}
+
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		rbd = GetComponent<Rigidbody2D> ();
 		animator = GetComponent<Animator> ();
+		ctrlWarrior = hero.gameObject.GetComponent<ControlWarrior> ();
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-		Vector2 vector = new Vector2 (vel, 0);
-
-		if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING) ) {
-			rbd.velocity = vector;	
+	void FixedUpdate ()
+	{
+		isDead = animator.GetCurrentAnimatorStateInfo (0).IsName (DYING);
+		if (isDead) {
+			return;
 		}
+		walk ();
+		doAnimation ();
+	}
 
-		if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING) && Random.value < 1f / (60f * 14f)) {
+	void walk ()
+	{
+		if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING)) {
+			Vector2 dir = (hero.transform.position - transform.position).normalized;
+			Vector2 vector = new Vector2 (dir.x, 0);
+			rbd.velocity = vector;
+			if (dir.x < 0 && !isNegative) {
+				needFlip = true;
+				isNegative = true;
+			} else if (dir.x >= 0 && isNegative) {
+				needFlip = true;
+				isNegative = false;
+			} else {
+				needFlip = false;
+			}
+			if (needFlip) {
+				flip ();
+			}
+		}
+	}
+
+	void doAnimation ()
+	{
+		bool walking = animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING);
+		bool idling = animator.GetCurrentAnimatorStateInfo (0).IsName (IDLING);
+		bool attacking = animator.GetCurrentAnimatorStateInfo (0).IsName (ATTACKING);
+		Debug.Log (attacking);
+		if ((walking || attacking) && Random.value < 1f / (60f * 14f)) {
 			animator.SetTrigger ("idle");
-		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName (IDLING) && Random.value < 1f / (60f * 3f)) {
+		} else if ((idling || attacking) && Random.value < 1f / (60f * 3f)) {
 			animator.SetTrigger ("walk");
+		} else if (!attacking && Random.value < 1f / (60f * 5f)) {
+			animator.SetTrigger ("attack");
 		}
-
-
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
-		flip ();
-	}
-
-	void flip(){
+	void flip ()
+	{
 		vel *= -1;
 		var scale = transform.localScale;
 		scale.x *= -1;
 		transform.localScale = scale;
+		needFlip = false;
+	}
+
+	public void sustractEnergy ()
+	{
+		currentEnergy--;
+		if (currentEnergy <= 0 && !isDead) {
+			animator.SetTrigger ("dead");
+		}
+	}
+
+	void SetHealthUI ()
+	{
+		healthEnemy.value = currentEnergy;
+
+		fillImage.color = Color.Lerp (zeroHealthColor, fullHealthColor, currentEnergy / startEnergy);
 	}
 }
