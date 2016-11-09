@@ -174,13 +174,18 @@ public class ControlWarrior : MonoBehaviour
 
 		if (tag == "parchment") {
 			ctrlParchment = other.gameObject.gameObject.GetComponent<ControlParchment> ();
-			ctrlParchment.disappearParchment ();
-			parchmentObtained++;
+			if (!ctrlParchment.isDisappear ()) {
+				ctrlParchment.disappearParchment ();
+				parchmentObtained++;
+			}
+			
 		}
 		if (tag == "gem_ruby") {
 			ctrlRuby = other.gameObject.gameObject.GetComponent<ControlRuby> ();
-			ctrlRuby.disappearRuby ();
-			numOfRubies++;
+			if(!ctrlRuby.isDisappear()){
+				ctrlRuby.disappearRuby ();
+				numOfRubies++;	
+			}
 		}	
 
 

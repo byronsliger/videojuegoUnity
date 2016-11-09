@@ -46,7 +46,6 @@ public class ControlAttackZombie : MonoBehaviour {
 	{
 		string tag = other.gameObject.tag;
 		if (tag == "hero" && animZombie.GetCurrentAnimatorStateInfo (0).IsName (ATTACKING)) {
-			Debug.Log ("entro");
 			ctrlWarrior = other.gameObject.gameObject.GetComponent<ControlWarrior> ();
 			ctrlWarrior.sustractEnergy ();
 		}

@@ -5,6 +5,7 @@ public class ControlRuby : MonoBehaviour
 {
 
 	Animator anim;
+	bool disappear = false;
 
 	// Use this for initialization
 	void Start ()
@@ -20,6 +21,11 @@ public class ControlRuby : MonoBehaviour
 
 	public void disappearRuby ()
 	{
+		disappear = true;
 		anim.SetTrigger ("disappear");
+	}
+
+	public bool isDisappear() {
+		return disappear;
 	}
 }

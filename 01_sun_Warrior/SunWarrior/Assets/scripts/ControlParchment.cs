@@ -4,6 +4,7 @@ using System.Collections;
 public class ControlParchment : MonoBehaviour
 {
 	Animator anim;
+	bool disappear = false;
 
 	// Use this for initialization
 	void Start ()
@@ -19,6 +20,11 @@ public class ControlParchment : MonoBehaviour
 
 	public void disappearParchment ()
 	{
+		disappear = true;
 		anim.SetTrigger ("disappear");
+	}
+
+	public bool isDisappear() {
+		return disappear;
 	}
 }

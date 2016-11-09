@@ -12,6 +12,8 @@ public class ControlZombie : MonoBehaviour
 	static string ATTACKING = "attacking";
 	static string DYING = "dying";
 
+	const int SCRAP_OBJECTS = 13;
+
 	public Transform hero;
 	bool isNegative = true;
 	bool needFlip = true;
@@ -42,7 +44,6 @@ public class ControlZombie : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		isDead = animator.GetCurrentAnimatorStateInfo (0).IsName (DYING);
 		if (isDead) {
 			return;
 		}
@@ -76,7 +77,6 @@ public class ControlZombie : MonoBehaviour
 		bool walking = animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING);
 		bool idling = animator.GetCurrentAnimatorStateInfo (0).IsName (IDLING);
 		bool attacking = animator.GetCurrentAnimatorStateInfo (0).IsName (ATTACKING);
-		Debug.Log (attacking);
 		if ((walking || attacking) && Random.value < 1f / (60f * 14f)) {
 			animator.SetTrigger ("idle");
 		} else if ((idling || attacking) && Random.value < 1f / (60f * 3f)) {
@@ -100,6 +100,8 @@ public class ControlZombie : MonoBehaviour
 		currentEnergy--;
 		if (currentEnergy <= 0 && !isDead) {
 			animator.SetTrigger ("dead");
+			gameObject.layer = SCRAP_OBJECTS;
+			isDead = true;
 		}
 	}
 
