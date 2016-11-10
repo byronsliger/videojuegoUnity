@@ -7,6 +7,7 @@ public class ControlZombie : MonoBehaviour
 	public float vel = -1;
 	Rigidbody2D rbd;
 	Animator animator;
+	Canvas canvasZombie;
 	static string WALKING = "walking";
 	static string IDLING = "idling";
 	static string ATTACKING = "attacking";
@@ -31,6 +32,7 @@ public class ControlZombie : MonoBehaviour
 	void OnGUI ()
 	{
 		SetHealthUI ();
+		canvasZombie = healthEnemy.GetComponentInParent<Canvas> ();
 	}
 
 	// Use this for initialization
@@ -101,6 +103,7 @@ public class ControlZombie : MonoBehaviour
 		if (currentEnergy <= 0 && !isDead) {
 			animator.SetTrigger ("dead");
 			gameObject.layer = SCRAP_OBJECTS;
+			canvasZombie.enabled = false;
 			isDead = true;
 		}
 	}
