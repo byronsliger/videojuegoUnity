@@ -2,12 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/ControlZombie.cs">
     <Files>
-      <File FileName="Assets/scripts/ControlWarrior.cs" Line="188" Column="5" />
-      <File FileName="Assets/scripts/ControlZombie.cs" Line="103" Column="36" />
-      <File FileName="Assets/scripts/ControlAttackWarrior.cs" Line="50" Column="29" />
-      <File FileName="Assets/scripts/ControlAttackZombie.cs" Line="48" Column="88" />
-      <File FileName="Assets/scripts/ControlParchment.cs" Line="27" Column="2" />
-      <File FileName="Assets/scripts/ControlRuby.cs" Line="30" Column="3" />
+      <File FileName="Assets/scripts/ControlWarrior.cs" Line="21" Column="2" />
+      <File FileName="Assets/scripts/ControlZombie.cs" Line="74" Column="40" />
+      <File FileName="Assets/scripts/ControlAttackWarrior.cs" Line="26" Column="35" />
+      <File FileName="Assets/scripts/ControlAttackZombie.cs" Line="26" Column="32" />
+      <File FileName="Assets/scripts/ControlParchment.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

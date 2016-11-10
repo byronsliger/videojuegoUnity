@@ -5,8 +5,8 @@ using UnityEditor;
 
 public class ControlWarrior : MonoBehaviour
 {
-	static float walkVel = 3f;
-	static float runVel = 3.5f;
+	static float walkVelocity = 3f;
+	static float runVelocity = 3.5f;
 	static string WALKING = "walking";
 	static string RUNNING = "running";
 	static string DYING = "Dying";
@@ -17,8 +17,8 @@ public class ControlWarrior : MonoBehaviour
 
 	Rigidbody2D rbd;
 	Animator animator;
-	float currentVel = 2f;
-	bool haciaDerecha = true;
+	float currentVelocity = 2f;
+	bool facingRight = true;
 	bool attacking = false;
 
 	ControlParchment ctrlParchment;
@@ -34,9 +34,14 @@ public class ControlWarrior : MonoBehaviour
 	public float yJumpForce = 300;
 	Vector2 jumpForce;
 
-	public bool onGround = true;
+	public bool onGround = false;
+	public Transform groungCheck;
+	float groungRadious = 0.2f;
+	public LayerMask whatIsGround;
+
 	public bool allowJump;
 	public string numCollition;
+	public bool died = false;
 	//public Canvas canvas;
 
 
@@ -74,6 +79,7 @@ public class ControlWarrior : MonoBehaviour
 			return;
 		}
 
+		onGround = Physics2D.OverlapCircle (groungCheck.position, groungRadious, whatIsGround);
 		move ();
 
 		jump ();
@@ -110,7 +116,7 @@ public class ControlWarrior : MonoBehaviour
 	void jump ()
 	{
 		if (Input.GetAxis ("Jump") > 0.01f) {
-			if (!jumping /*&& onGround */) {
+			if (!jumping && onGround) {
 				
 				jumpForce.x = 0f;
 				jumpForce.y = yJumpForce;
@@ -138,28 +144,26 @@ public class ControlWarrior : MonoBehaviour
 
 	void move ()
 	{
-		float v = Input.GetAxis ("Horizontal") * currentVel;
-		float speed = v < 0 ? v * -1 : v;
-		animator.SetFloat ("speed", speed);
-		Vector2 vel = new Vector2 (0, rbd.velocity.y);
+		float move = Input.GetAxis ("Horizontal") * currentVelocity;
+
+		//float speed = move < 0 ? move * -1 : move;
+		animator.SetFloat ("speed", Mathf.Abs (move));
 		if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING)) {
-			currentVel = walkVel;
+			currentVelocity = walkVelocity;
 		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName (RUNNING)) {
-			currentVel = runVel;
+			currentVelocity = runVelocity;
 		}
-		vel.x = v * currentVel;
-		rbd.velocity = vel;
-		if (haciaDerecha && v < 0) {
-			haciaDerecha = false;
+		rbd.velocity = new Vector2 (move * currentVelocity, rbd.velocity.y);
+		if (facingRight && move < 0) {
 			flip ();
-		} else if (!haciaDerecha && v > 0) {
-			haciaDerecha = true;
+		} else if (!facingRight && move > 0) {
 			flip ();
 		}
 	}
 
 	void flip ()
 	{
+		facingRight = !facingRight;
 		var scale = transform.localScale;
 		scale.x *= -1;
 		transform.localScale = scale;
@@ -182,7 +186,7 @@ public class ControlWarrior : MonoBehaviour
 		}
 		if (tag == "gem_ruby") {
 			ctrlRuby = other.gameObject.gameObject.GetComponent<ControlRuby> ();
-			if(!ctrlRuby.isDisappear()){
+			if (!ctrlRuby.isDisappear ()) {
 				ctrlRuby.disappearRuby ();
 				numOfRubies++;	
 			}
@@ -191,10 +195,16 @@ public class ControlWarrior : MonoBehaviour
 
 	}
 
-	public void sustractEnergy(){
+	public void sustractEnergy ()
+	{
 		energy--;
-		if(energy <= 0){
+		if (energy <= 0) {
 			animator.SetTrigger ("dead");
+			died = true;
 		}
+	}
+
+	public bool isDead (){
+		return died;
 	}
 }

@@ -23,7 +23,7 @@ public class ControlAttackWarrior : MonoBehaviour {
 				attacking = true;
 				upCollider ();
 
-				Invoke ("downCollider", 0.1f);
+				Invoke ("downCollider", 0.3f);
 			}
 		} else {
 			attacking = false;

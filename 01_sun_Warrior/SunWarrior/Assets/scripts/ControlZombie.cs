@@ -4,20 +4,20 @@ using UnityEngine.UI;
 
 public class ControlZombie : MonoBehaviour
 {
-	public float vel = -1;
+	public float defaultVelocity = -1f;
 	Rigidbody2D rbd;
 	Animator animator;
 	Canvas canvasZombie;
 	static string WALKING = "walking";
 	static string IDLING = "idling";
 	static string ATTACKING = "attacking";
-	static string DYING = "dying";
 
 	const int SCRAP_OBJECTS = 13;
 
 	public Transform hero;
 	bool isNegative = true;
 	bool needFlip = true;
+	bool facingRight = true;
 
 	public ControlWarrior ctrlWarrior;
 	public int currentEnergy = 10;
@@ -28,6 +28,9 @@ public class ControlZombie : MonoBehaviour
 	public Image fillImage;
 	Color zeroHealthColor = Color.red;
 	Color fullHealthColor = Color.green;
+	public float distance;
+
+	public int maxDistanceToFollow = 20;
 
 	void OnGUI ()
 	{
@@ -46,9 +49,10 @@ public class ControlZombie : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		if (isDead) {
+		if (isDead || ctrlWarrior.isDead ()) {
 			return;
 		}
+		distance = Vector2.Distance (transform.position, hero.position);
 		walk ();
 		doAnimation ();
 	}
@@ -56,21 +60,35 @@ public class ControlZombie : MonoBehaviour
 	void walk ()
 	{
 		if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING)) {
-			Vector2 dir = (hero.transform.position - transform.position).normalized;
-			Vector2 vector = new Vector2 (dir.x, 0);
-			rbd.velocity = vector;
-			if (dir.x < 0 && !isNegative) {
-				needFlip = true;
-				isNegative = true;
-			} else if (dir.x >= 0 && isNegative) {
-				needFlip = true;
-				isNegative = false;
+			float velocity = defaultVelocity;
+			if (distance < maxDistanceToFollow) {
+				Vector2 dir = (hero.transform.position - transform.position).normalized;
+				velocity = dir.x * 2f;
+				followHero (velocity);
 			} else {
-				needFlip = false;
+				if (Random.value < 1f / (60f * 2f)) {
+					isNegative = !isNegative;
+					flip (true);
+				}
 			}
-			if (needFlip) {
-				flip ();
-			}
+			rbd.velocity = new Vector2 (velocity, 0);
+
+		}
+	}
+
+	void followHero (float velocity)
+	{
+		if (velocity < 0 && !isNegative) {
+			needFlip = true;
+			isNegative = true;
+		} else if (velocity >= 0 && isNegative) {
+			needFlip = true;
+			isNegative = false;
+		} else {
+			needFlip = false;
+		}
+		if (needFlip) {
+			flip ();
 		}
 	}
 
@@ -79,22 +97,24 @@ public class ControlZombie : MonoBehaviour
 		bool walking = animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING);
 		bool idling = animator.GetCurrentAnimatorStateInfo (0).IsName (IDLING);
 		bool attacking = animator.GetCurrentAnimatorStateInfo (0).IsName (ATTACKING);
-		if ((walking || attacking) && Random.value < 1f / (60f * 14f)) {
+		if ((walking || attacking) && Random.value < 1f / (60f * 7f)) {
 			animator.SetTrigger ("idle");
-		} else if ((idling || attacking) && Random.value < 1f / (60f * 3f)) {
-			animator.SetTrigger ("walk");
-		} else if (!attacking && Random.value < 1f / (60f * 5f)) {
+		} else if (!attacking && Random.value < 1f / (60f * 7f)) {
 			animator.SetTrigger ("attack");
-		}
+		} else if ((idling || attacking) && Random.value < 1f / (60f * 1f)) {
+			animator.SetTrigger ("walk");
+		} 
 	}
 
-	void flip ()
+	void flip (bool isRamdonFlip = false)
 	{
-		vel *= -1;
+		facingRight = !facingRight;
+		defaultVelocity *= -1;
 		var scale = transform.localScale;
 		scale.x *= -1;
 		transform.localScale = scale;
-		needFlip = false;
+		if (!isRamdonFlip)
+			needFlip = false;
 	}
 
 	public void sustractEnergy ()

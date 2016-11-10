@@ -23,7 +23,7 @@ public class ControlAttackZombie : MonoBehaviour {
 				attacking = true;
 				upCollider ();
 
-				Invoke ("downCollider", 0.1f);
+				Invoke ("downCollider", 0.5f);
 			}
 		} else {
 			attacking = false;
