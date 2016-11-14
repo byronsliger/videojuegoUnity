@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using UnityEditor;
 
 public class ControlWarrior : MonoBehaviour
 {
+	const string pathTexturePotionOnTop = "potion_6";
+	const string pathTextureParchmentOnTop = "scroll_5";
+	const string pathTextureParchmentBlackOnTop = "scroll_5_black";
+
 	static float walkVelocity = 3f;
 	static float runVelocity = 3.5f;
 	static string WALKING = "walking";
 	static string RUNNING = "running";
 	static string DYING = "Dying";
 	static string HITTING = "Hitting";
-
-	const string pathTexturePotionOnTop = "Assets/Premios/PNG/64px/potion_6.png";
-	const string pathTextureParchmentOnTop = "Assets/Premios/PNG/64px/scroll_5.png";
-	const string pathTextureParchmentBlackOnTop = "Assets/Premios/PNG/64px/scroll_5_black.png";
 
 	Rigidbody2D rbd;
 	Animator animator;
@@ -78,12 +77,6 @@ public class ControlWarrior : MonoBehaviour
 
 	}
 
-	void OnGUI ()
-	{
-		drawEnergyHero ();
-		drawParchmentFinded ();
-	}
-
 	// Update is called once per frame
 	void Update ()
 	{
@@ -107,31 +100,6 @@ public class ControlWarrior : MonoBehaviour
 
 		attack ();
 
-	}
-
-	void drawEnergyHero ()
-	{
-		Texture2D inputTexture = (Texture2D)UnityEditor.AssetDatabase.LoadAssetAtPath (pathTexturePotionOnTop, typeof(Texture2D));
-		int x = 10;
-		for (int i = 1; i <= energy; i++) {
-			GUI.DrawTexture (new Rect (x, 10, 19, 32), inputTexture);
-			x += 25;
-		}
-	}
-
-	void drawParchmentFinded ()
-	{
-		Texture2D parchmentBlackOnTop = (Texture2D)UnityEditor.AssetDatabase.LoadAssetAtPath (pathTextureParchmentBlackOnTop, typeof(Texture2D));
-		Texture2D parchmentOnTop = (Texture2D)UnityEditor.AssetDatabase.LoadAssetAtPath (pathTextureParchmentOnTop, typeof(Texture2D));
-		int x = 505;
-		for (int i = 1; i <= 3; i++) {
-			if (parchmentObtained < i) {
-				GUI.DrawTexture (new Rect (x, 10, 32, 31), parchmentBlackOnTop);
-			} else { 
-				GUI.DrawTexture (new Rect (x, 10, 32, 31), parchmentOnTop);
-			}
-			x -= 35;
-		}
 	}
 
 	void jump ()
@@ -262,4 +230,36 @@ public class ControlWarrior : MonoBehaviour
 		animator.SetTrigger ("hit");
 		rbd.AddForce(Vector2.left * xHitForce);
 	}
+
+	void OnGUI ()
+	{
+		drawEnergyHero ();
+		drawParchmentFinded ();
+	}
+
+	void drawEnergyHero ()
+	{
+		Texture2D s = Resources.Load (pathTexturePotionOnTop, typeof(Texture2D)) as Texture2D;
+		int x = 10;
+		for (int i = 1; i <= energy; i++) {
+			GUI.DrawTexture (new Rect (x, 10, 19, 32), s);
+			x += 25;
+		}
+	}
+	void drawParchmentFinded ()
+	{
+		
+		Texture2D parchmentBlackOnTop = Resources.Load (pathTextureParchmentBlackOnTop, typeof(Texture2D)) as Texture2D;
+		Texture2D parchmentOnTop = Resources.Load (pathTextureParchmentOnTop, typeof(Texture2D)) as Texture2D;
+		int x = 505;
+		for (int i = 1; i <= 3; i++) {
+			if (parchmentObtained < i) {
+				GUI.DrawTexture (new Rect (x, 10, 32, 31), parchmentBlackOnTop);
+			} else { 
+				GUI.DrawTexture (new Rect (x, 10, 32, 31), parchmentOnTop);
+			}
+			x -= 35;
+		}
+	}
+
 }

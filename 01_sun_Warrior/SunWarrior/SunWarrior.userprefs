@@ -1,11 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/ControlParchment.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/ControlWarrior.cs">
     <Files>
-      <File FileName="Assets/scripts/ControlWarrior.cs" Line="1" Column="1" />
-      <File FileName="Assets/scripts/ControlZombie.cs" Line="1" Column="1" />
+      <File FileName="Assets/scripts/ControlWarrior.cs" Line="248" Column="4" />
+      <File FileName="Assets/scripts/ControlZombie.cs" Line="23" Column="26" />
       <File FileName="Assets/scripts/ControlRuby.cs" Line="1" Column="1" />
-      <File FileName="Assets/scripts/ControlParchment.cs" Line="27" Column="33" />
+      <File FileName="Assets/scripts/ControlParchment.cs" Line="10" Column="2" />
+      <File FileName="Assets/scripts/ControlScene.cs" Line="25" Column="83" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
