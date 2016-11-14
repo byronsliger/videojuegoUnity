@@ -97,13 +97,13 @@ public class ControlZombie : MonoBehaviour
 		bool walking = animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING);
 		bool idling = animator.GetCurrentAnimatorStateInfo (0).IsName (IDLING);
 		bool attacking = animator.GetCurrentAnimatorStateInfo (0).IsName (ATTACKING);
-		if ((walking || attacking) && Random.value < 1f / (60f * 7f)) {
+		/*if ((walking || attacking) && Random.value < 1f / (60f * 7f)) {
 			animator.SetTrigger ("idle");
-		} else if (!attacking && Random.value < 1f / (60f * 7f)) {
+		} else */if (!attacking && Random.value < 1f / (60f * 2f)) {
 			animator.SetTrigger ("attack");
-		} else if ((idling || attacking) && Random.value < 1f / (60f * 1f)) {
+		} /*else if ((idling || attacking) && Random.value < 1f / (60f * 1f)) {
 			animator.SetTrigger ("walk");
-		} 
+		} */
 	}
 
 	void flip (bool isRamdonFlip = false)

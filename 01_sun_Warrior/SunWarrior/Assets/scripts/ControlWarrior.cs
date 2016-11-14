@@ -10,6 +10,7 @@ public class ControlWarrior : MonoBehaviour
 	static string WALKING = "walking";
 	static string RUNNING = "running";
 	static string DYING = "Dying";
+	static string HITTING = "Hitting";
 
 	const string pathTexturePotionOnTop = "Assets/Premios/PNG/64px/potion_6.png";
 	const string pathTextureParchmentOnTop = "Assets/Premios/PNG/64px/scroll_5.png";
@@ -42,6 +43,14 @@ public class ControlWarrior : MonoBehaviour
 	public bool allowJump;
 	public string numCollition;
 	public bool died = false;
+
+	public SpriteRenderer sprite;
+	bool isFadeOut = false;
+	public float timeToFadeIn = 1f;
+	public float xHitForce = 300;
+	Vector2 hitForce;
+	bool isHit = false;
+
 	//public Canvas canvas;
 
 
@@ -50,6 +59,7 @@ public class ControlWarrior : MonoBehaviour
 	{
 		rbd = GetComponent<Rigidbody2D> ();
 		animator = GetComponent<Animator> ();
+		sprite = GetComponent<SpriteRenderer> ();
 
 		/*canvas = GameObject.Find ("Canvas").GetComponent<Canvas> ();
 
@@ -70,6 +80,9 @@ public class ControlWarrior : MonoBehaviour
 	void Update ()
 	{
 		txtNumOfRubies.text = "x " + numOfRubies;
+		if (isFadeOut) {
+			FadeOut ();
+		}
 	}
 		
 	// Update is called once per frame
@@ -144,20 +157,23 @@ public class ControlWarrior : MonoBehaviour
 
 	void move ()
 	{
-		float move = Input.GetAxis ("Horizontal") * currentVelocity;
 
-		//float speed = move < 0 ? move * -1 : move;
-		animator.SetFloat ("speed", Mathf.Abs (move));
-		if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING)) {
-			currentVelocity = walkVelocity;
-		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName (RUNNING)) {
-			currentVelocity = runVelocity;
-		}
-		rbd.velocity = new Vector2 (move * currentVelocity, rbd.velocity.y);
-		if (facingRight && move < 0) {
-			flip ();
-		} else if (!facingRight && move > 0) {
-			flip ();
+		if (!animator.GetCurrentAnimatorStateInfo (0).IsName (HITTING)) {
+			float move = Input.GetAxis ("Horizontal") * currentVelocity;
+
+			//float speed = move < 0 ? move * -1 : move;
+			animator.SetFloat ("speed", Mathf.Abs (move));
+			if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING)) {
+				currentVelocity = walkVelocity;
+			} else if (animator.GetCurrentAnimatorStateInfo (0).IsName (RUNNING)) {
+				currentVelocity = runVelocity;
+			}
+			rbd.velocity = new Vector2 (move * currentVelocity, rbd.velocity.y);
+			if (facingRight && move < 0) {
+				flip ();
+			} else if (!facingRight && move > 0) {
+				flip ();
+			}
 		}
 	}
 
@@ -197,14 +213,41 @@ public class ControlWarrior : MonoBehaviour
 
 	public void sustractEnergy ()
 	{
-		energy--;
-		if (energy <= 0) {
-			animator.SetTrigger ("dead");
-			died = true;
+		if (!isFadeOut) {
+			energy--;
+			if (energy > 0) {
+				toDoWhenHitMe ();
+			}
+			isFadeOut = true;
+			Invoke ("setFadeOutToFalse", timeToFadeIn);
+			if (energy <= 0) {
+				setFadeOutToFalse ();
+				animator.SetTrigger ("dead");
+				died = true;
+			}
 		}
 	}
 
 	public bool isDead (){
 		return died;
+	}
+		
+	void FadeOut() {
+		float a = Mathf.PingPong (Time.time / 0.05f, 1.0f);
+		sprite.color = new Color(1f, 1f, 1f, a);
+	}
+
+	void FadeIn() {
+		sprite.color = new Color(1f, 1f, 1f, 1f);
+	}
+
+	void setFadeOutToFalse(){
+		isFadeOut = false;
+		FadeIn ();
+	}
+
+	void toDoWhenHitMe(){
+		animator.SetTrigger ("hit");
+		rbd.AddForce(Vector2.left * xHitForce);
 	}
 }
