@@ -49,7 +49,12 @@ public class ControlWarrior : MonoBehaviour
 	public float timeToFadeIn = 1f;
 	public float xHitForce = 300;
 	Vector2 hitForce;
-	bool isHit = false;
+
+	public AudioClip warriorDeath;
+	public AudioClip warriorJump;
+	public AudioClip warriorAttck;
+	public AudioClip warriorReciveHit;
+	AudioSource aSource;
 
 	//public Canvas canvas;
 
@@ -60,6 +65,7 @@ public class ControlWarrior : MonoBehaviour
 		rbd = GetComponent<Rigidbody2D> ();
 		animator = GetComponent<Animator> ();
 		sprite = GetComponent<SpriteRenderer> ();
+		aSource = GetComponent<AudioSource> ();
 
 		/*canvas = GameObject.Find ("Canvas").GetComponent<Canvas> ();
 
@@ -130,7 +136,7 @@ public class ControlWarrior : MonoBehaviour
 	{
 		if (Input.GetAxis ("Jump") > 0.01f) {
 			if (!jumping && onGround) {
-				
+				aSource.PlayOneShot (warriorJump);
 				jumpForce.x = 0f;
 				jumpForce.y = yJumpForce;
 				animator.SetTrigger ("jump");
@@ -147,6 +153,7 @@ public class ControlWarrior : MonoBehaviour
 	{
 		if (Mathf.Abs (Input.GetAxis ("Fire1")) > 0.01f) {
 			if (!attacking) {
+				aSource.PlayOneShot (warriorAttck);
 				attacking = true;
 				animator.SetTrigger ("attack");
 			}
@@ -215,6 +222,7 @@ public class ControlWarrior : MonoBehaviour
 	{
 		if (!isFadeOut) {
 			energy--;
+			aSource.PlayOneShot (warriorReciveHit);
 			if (energy > 0) {
 				toDoWhenHitMe ();
 			}
@@ -222,6 +230,7 @@ public class ControlWarrior : MonoBehaviour
 			Invoke ("setFadeOutToFalse", timeToFadeIn);
 			if (energy <= 0) {
 				setFadeOutToFalse ();
+				aSource.PlayOneShot (warriorDeath);
 				animator.SetTrigger ("dead");
 				died = true;
 			}

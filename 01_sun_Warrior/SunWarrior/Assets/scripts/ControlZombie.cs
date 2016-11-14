@@ -32,6 +32,13 @@ public class ControlZombie : MonoBehaviour
 
 	public int maxDistanceToFollow = 20;
 
+	public AudioClip zombieDeath;
+	public AudioClip zombieAttack;
+	public AudioClip zombieCatchWarrior;
+	public AudioClip zombieReciveHit;
+	AudioSource aSource;
+	bool hasSoundedCatchWarrior = false;
+
 	void OnGUI ()
 	{
 		SetHealthUI ();
@@ -44,6 +51,7 @@ public class ControlZombie : MonoBehaviour
 		rbd = GetComponent<Rigidbody2D> ();
 		animator = GetComponent<Animator> ();
 		ctrlWarrior = hero.gameObject.GetComponent<ControlWarrior> ();
+		aSource = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -62,10 +70,15 @@ public class ControlZombie : MonoBehaviour
 		if (animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING)) {
 			float velocity = defaultVelocity;
 			if (distance < maxDistanceToFollow) {
+				if (!hasSoundedCatchWarrior) {
+					aSource.PlayOneShot (zombieCatchWarrior);
+					hasSoundedCatchWarrior = true;
+				}
 				Vector2 dir = (hero.transform.position - transform.position).normalized;
 				velocity = dir.x * 2f;
 				followHero (velocity);
 			} else {
+				hasSoundedCatchWarrior = false;
 				if (Random.value < 1f / (60f * 2f)) {
 					isNegative = !isNegative;
 					flip (true);
@@ -97,13 +110,14 @@ public class ControlZombie : MonoBehaviour
 		bool walking = animator.GetCurrentAnimatorStateInfo (0).IsName (WALKING);
 		bool idling = animator.GetCurrentAnimatorStateInfo (0).IsName (IDLING);
 		bool attacking = animator.GetCurrentAnimatorStateInfo (0).IsName (ATTACKING);
-		/*if ((walking || attacking) && Random.value < 1f / (60f * 7f)) {
+		if ((walking || attacking) && Random.value < 1f / (60f * 7f)) {
 			animator.SetTrigger ("idle");
-		} else */if (!attacking && Random.value < 1f / (60f * 2f)) {
+		} else if (!attacking && Random.value < 1f / (60f * 7f)) {
 			animator.SetTrigger ("attack");
-		} /*else if ((idling || attacking) && Random.value < 1f / (60f * 1f)) {
+			aSource.PlayOneShot (zombieAttack);
+		} else if ((idling || attacking) && Random.value < 1f / (60f * 1f)) {
 			animator.SetTrigger ("walk");
-		} */
+		} 
 	}
 
 	void flip (bool isRamdonFlip = false)
@@ -120,7 +134,9 @@ public class ControlZombie : MonoBehaviour
 	public void sustractEnergy ()
 	{
 		currentEnergy--;
+		aSource.PlayOneShot (zombieReciveHit);
 		if (currentEnergy <= 0 && !isDead) {
+			aSource.PlayOneShot (zombieDeath);
 			animator.SetTrigger ("dead");
 			gameObject.layer = SCRAP_OBJECTS;
 			canvasZombie.enabled = false;
