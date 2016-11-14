@@ -25,6 +25,7 @@ public class ControlWarrior : MonoBehaviour
 	ControlParchment ctrlParchment;
 	ControlRuby ctrlRuby;
 	ControlZombie ctrlZombie;
+	ControlScene ctrlScene;
 
 	public int energy = 3;
 	public int parchmentObtained = 0;
@@ -66,6 +67,7 @@ public class ControlWarrior : MonoBehaviour
 		animator = GetComponent<Animator> ();
 		sprite = GetComponent<SpriteRenderer> ();
 		aSource = GetComponent<AudioSource> ();
+		ctrlScene = GameObject.Find ("scene").GetComponent<ControlScene> ();
 
 		/*canvas = GameObject.Find ("Canvas").GetComponent<Canvas> ();
 
@@ -232,6 +234,7 @@ public class ControlWarrior : MonoBehaviour
 				setFadeOutToFalse ();
 				aSource.PlayOneShot (warriorDeath);
 				animator.SetTrigger ("dead");
+				ctrlScene.GameOver ();
 				died = true;
 			}
 		}

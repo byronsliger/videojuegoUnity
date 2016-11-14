@@ -6,10 +6,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{C59E5946-83EE-4375-B4DD-0D91979008F1}</ProjectGuid>
+    <ProjectGuid>{FDA6681B-C279-6B31-82ED-F804B732B5A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>Assets</BaseDirectory>
@@ -45,16 +45,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\scripts\ControlAttackWarrior.cs" />
-     <Compile Include="Assets\scripts\ControlAttackZombie.cs" />
-     <Compile Include="Assets\scripts\ControlGround.cs" />
-     <Compile Include="Assets\scripts\ControlParchment.cs" />
-     <Compile Include="Assets\scripts\ControlRuby.cs" />
-     <Compile Include="Assets\scripts\ControlScene.cs" />
-     <Compile Include="Assets\scripts\ControlWarrior.cs" />
-     <Compile Include="Assets\scripts\ControlZombie.cs" />
-     <Compile Include="Assets\scripts\ControllerCamera.cs" />
-     <Compile Include="Assets\scripts\disapperObject.cs" />
+     <Compile Include="Assets\Plugins\UnityAnalytics\AndroidWrapper.cs" />
+     <Compile Include="Assets\Plugins\UnityAnalytics\PlatformWrapper.cs" />
+     <Compile Include="Assets\Plugins\UnityAnalytics\UnityAnalytics.cs" />
+     <Compile Include="Assets\Plugins\UnityAnalytics\UnityAnalyticsBuildHooks.cs" />
+     <Compile Include="Assets\Plugins\UnityAnalytics\UnityAnalyticsEditor.cs" />
+     <Compile Include="Assets\Plugins\UnityAnalytics\WebGLWrapper.cs" />
+     <Compile Include="Assets\Plugins\UnityAnalytics\WebPlayerWrapper.cs" />
+     <Compile Include="Assets\Plugins\UnityAnalytics\WindowsFileSystem.cs" />
+     <Compile Include="Assets\Plugins\UnityAnalytics\WindowsMetroWrapper.cs" />
+     <Compile Include="Assets\Plugins\UnityAnalytics\iOSWrapper.cs" />
      <None Include="Assets\freeknight\README.txt" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
@@ -64,6 +64,12 @@
  </Reference>
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Cloud.Analytics">
+ <HintPath>/Volumes/WORK/Proyectos/Unity/Coursera/01_sun_Warrior/SunWarrior/Assets/Plugins/UnityEngine.Cloud.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Cloud.Analytics.Util">
+ <HintPath>/Volumes/WORK/Proyectos/Unity/Coursera/01_sun_Warrior/SunWarrior/Assets/Plugins/UnityEngine.Cloud.Analytics.Util.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
