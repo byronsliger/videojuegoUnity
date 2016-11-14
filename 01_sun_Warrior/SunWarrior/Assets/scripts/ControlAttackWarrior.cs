@@ -33,12 +33,12 @@ public class ControlAttackWarrior : MonoBehaviour {
 	}
 	void upCollider (){
 		currentPosition = transform.position;
-		currentPosition.y += 5;
+		currentPosition.y += 3;
 		transform.position = currentPosition;
 	}
 	void downCollider (){
 		currentPosition = transform.position;
-		currentPosition.y -= 5;
+		currentPosition.y -= 3;
 		transform.position = currentPosition;
 	}
 

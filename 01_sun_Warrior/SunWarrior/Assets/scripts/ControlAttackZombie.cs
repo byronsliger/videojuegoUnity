@@ -33,12 +33,12 @@ public class ControlAttackZombie : MonoBehaviour {
 	}
 	void upCollider (){
 		currentPosition = transform.position;
-		currentPosition.y += 5;
+		currentPosition.y += 4.1f;
 		transform.position = currentPosition;
 	}
 	void downCollider (){
 		currentPosition = transform.position;
-		currentPosition.y -= 5;
+		currentPosition.y -= 4.1f;
 		transform.position = currentPosition;
 	}
 
