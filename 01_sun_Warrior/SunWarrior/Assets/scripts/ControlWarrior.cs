@@ -36,7 +36,7 @@ public class ControlWarrior : MonoBehaviour
 	public Transform groungCheck;
 	float groungRadious = 0.2f;
 	public LayerMask whatIsGround;
-	public bool died = false;
+	public bool gameOver = false;
 
 	public SpriteRenderer sprite;
 	bool isFadeOut = false;
@@ -83,7 +83,7 @@ public class ControlWarrior : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		if (animator.GetCurrentAnimatorStateInfo (0).IsName (DYING)) {
+		if (gameOver) {
 			return;
 		}
 
@@ -171,13 +171,13 @@ public class ControlWarrior : MonoBehaviour
 				aSource.PlayOneShot (warriorDeath);
 				animator.SetTrigger ("dead");
 				ctrlScene.GameOver ();
-				died = true;
+				gameOver = true;
 			}
 		}
 	}
 
-	public bool isDead (){
-		return died;
+	public bool hasWonTheGame (){
+		return gameOver;
 	}
 		
 	void FadeOut() {

@@ -56,7 +56,7 @@ public class ControlZombie : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-		if (isDead || ctrlWarrior.isDead ()) {
+		if (isDead || ctrlWarrior.hasWonTheGame ()) {
 			return;
 		}
 		distance = Vector2.Distance (transform.position, hero.position);

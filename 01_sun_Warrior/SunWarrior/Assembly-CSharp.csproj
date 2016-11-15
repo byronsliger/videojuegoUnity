@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\scripts\ControlAttackWarrior.cs" />
      <Compile Include="Assets\scripts\ControlAttackZombie.cs" />
+     <Compile Include="Assets\scripts\ControlChest.cs" />
      <Compile Include="Assets\scripts\ControlGround.cs" />
      <Compile Include="Assets\scripts\ControlParchment.cs" />
      <Compile Include="Assets\scripts\ControlRuby.cs" />
