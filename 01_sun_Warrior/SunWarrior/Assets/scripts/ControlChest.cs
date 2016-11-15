@@ -3,12 +3,14 @@ using System.Collections;
 
 public class ControlChest : MonoBehaviour {
 	ControlWarrior ctrlWarrior;
+	ControlScene ctrlScene;
 
 	public AudioClip winTheLevel;
 	AudioSource aSource;
 	// Use this for initialization
 	void Start () {
 		ctrlWarrior = GameObject.Find ("warrior").GetComponent<ControlWarrior> ();
+		ctrlScene = GameObject.Find ("scene").GetComponent<ControlScene> ();
 		aSource = GetComponent<AudioSource> ();
 	}
 	
@@ -22,6 +24,7 @@ public class ControlChest : MonoBehaviour {
 		if (tag == "hero" && ctrlWarrior.parchmentObtained > 0) {
 			ctrlWarrior.gameOver = true;
 			aSource.PlayOneShot (winTheLevel);
+			ctrlScene.LevelOver ();
 		}
 	}
 }

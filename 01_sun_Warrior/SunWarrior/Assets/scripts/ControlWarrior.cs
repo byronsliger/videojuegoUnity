@@ -170,7 +170,7 @@ public class ControlWarrior : MonoBehaviour
 				setFadeOutToFalse ();
 				aSource.PlayOneShot (warriorDeath);
 				animator.SetTrigger ("dead");
-				ctrlScene.GameOver ();
+				ctrlScene.LevelOver ();
 				gameOver = true;
 			}
 		}

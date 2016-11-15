@@ -40,7 +40,7 @@ public class ControlScene : MonoBehaviour {
 		Analytics.CustomEvent ("GameStart", new Dictionary<string, object>{});
 	}
 
-	public void GameOver() {
+	public void LevelOver() {
 		ControlWarrior crtlWarrior = GameObject.Find ("warrior").GetComponent<ControlWarrior> ();
 		ControlZombie crtlZombie = GameObject.Find ("zombie").GetComponent<ControlZombie> ();
 		float secsTime = Time.time;
