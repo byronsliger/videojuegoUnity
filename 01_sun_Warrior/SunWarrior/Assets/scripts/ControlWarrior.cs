@@ -21,9 +21,6 @@ public class ControlWarrior : MonoBehaviour
 	bool facingRight = true;
 	bool attacking = false;
 
-	ControlParchment ctrlParchment;
-	ControlRuby ctrlRuby;
-	ControlZombie ctrlZombie;
 	ControlScene ctrlScene;
 
 	public int energy = 3;
@@ -39,9 +36,6 @@ public class ControlWarrior : MonoBehaviour
 	public Transform groungCheck;
 	float groungRadious = 0.2f;
 	public LayerMask whatIsGround;
-
-	public bool allowJump;
-	public string numCollition;
 	public bool died = false;
 
 	public SpriteRenderer sprite;
@@ -162,32 +156,6 @@ public class ControlWarrior : MonoBehaviour
 		transform.localScale = scale;
 	}
 
-	void OnTriggerEnter2D (Collider2D other)
-	{
-		string tag = other.gameObject.tag;
-		if (tag == "ground") {
-			onGround = true;
-		}
-
-		if (tag == "parchment") {
-			ctrlParchment = other.gameObject.gameObject.GetComponent<ControlParchment> ();
-			if (!ctrlParchment.isDisappear ()) {
-				ctrlParchment.disappearParchment ();
-				parchmentObtained++;
-			}
-			
-		}
-		if (tag == "gem_ruby") {
-			ctrlRuby = other.gameObject.gameObject.GetComponent<ControlRuby> ();
-			if (!ctrlRuby.isDisappear ()) {
-				ctrlRuby.disappearRuby ();
-				numOfRubies++;	
-			}
-		}	
-
-
-	}
-
 	public void sustractEnergy ()
 	{
 		if (!isFadeOut) {
@@ -231,6 +199,14 @@ public class ControlWarrior : MonoBehaviour
 		rbd.AddForce(Vector2.left * xHitForce);
 	}
 
+	public void addOneToNumOfRubies(){
+		numOfRubies++;
+	}
+
+	public void addOneToParchmentObtained(){
+		parchmentObtained++;
+	}
+
 	void OnGUI ()
 	{
 		drawEnergyHero ();
@@ -246,6 +222,7 @@ public class ControlWarrior : MonoBehaviour
 			x += 25;
 		}
 	}
+
 	void drawParchmentFinded ()
 	{
 		

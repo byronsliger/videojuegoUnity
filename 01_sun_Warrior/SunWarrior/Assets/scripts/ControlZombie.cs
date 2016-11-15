@@ -17,7 +17,6 @@ public class ControlZombie : MonoBehaviour
 	public Transform hero;
 	bool isNegative = true;
 	bool needFlip = true;
-	bool facingRight = true;
 
 	public ControlWarrior ctrlWarrior;
 	public int currentEnergy = 10;
@@ -122,7 +121,6 @@ public class ControlZombie : MonoBehaviour
 
 	void flip (bool isRamdonFlip = false)
 	{
-		facingRight = !facingRight;
 		defaultVelocity *= -1;
 		var scale = transform.localScale;
 		scale.x *= -1;

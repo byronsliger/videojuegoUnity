@@ -32,4 +32,14 @@ public class ControlRuby : MonoBehaviour
 	public bool isDisappear() {
 		return disappear;
 	}
+
+	void OnTriggerEnter2D (Collider2D other){
+		string tag = other.gameObject.tag;
+		if (tag == "hero") {
+			if (!disappear) {
+				disappearRuby ();
+				other.gameObject.GetComponent<ControlWarrior> ().addOneToNumOfRubies ();	
+			}
+		}	
+	}
 }

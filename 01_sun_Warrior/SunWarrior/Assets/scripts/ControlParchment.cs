@@ -31,4 +31,14 @@ public class ControlParchment : MonoBehaviour
 	public bool isDisappear() {
 		return disappear;
 	}
+
+	void OnTriggerEnter2D (Collider2D other){
+		string tag = other.gameObject.tag;
+		if (tag == "hero") {
+			if (!disappear) {
+				disappearParchment ();
+				other.gameObject.GetComponent<ControlWarrior> ().addOneToParchmentObtained ();	
+			}
+		}	
+	}
 }
